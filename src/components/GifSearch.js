@@ -6,14 +6,12 @@ class GifSearch extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({
-      query: event.target.value,
-    });
+    this.setState({ query: event.target.value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit(this.state.query);
+    this.props.handleFetchGifs(this.state.query);
   };
 
   render() {
@@ -23,7 +21,7 @@ class GifSearch extends Component {
           type="text"
           value={this.state.query}
           onChange={this.handleChange}
-          placeholder="Enter search term..."
+          placeholder="Enter search query"
         />
         <button type="submit">Search</button>
       </form>

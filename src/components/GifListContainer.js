@@ -8,19 +8,17 @@ class GifListContainer extends Component {
   };
 
   componentDidMount() {
-    this.fetchGifs("dolphin"); // Default search query on initial load
+    // Fetch initial data when the component mounts
+    this.handleFetchGifs("dolphin"); // You can set a default search query here
   }
 
-  fetchGifs = (query) => {
-    const API_KEY = "YOUR_API_KEY_HERE";
-    const url = `https://api.giphy.com/v1/gifs/search?q=${query}&api_key=${API_KEY}&rating=g`;
-
-    fetch(url)
+  handleFetchGifs = (query) => {
+    // Fetch data from your local JSON Server instead of the Giphy API
+    fetch(`http://localhost:8001/data?q=${query}`)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({
-          gifs: data.data.slice(0, 3), // Storing only the first 3 gifs in the state
-        });
+        const gifs = data.slice(0, 3); // Store the first 3 gifs in the state
+        this.setState({ gifs });
       })
       .catch((error) => console.error("Error fetching gifs:", error));
   };
@@ -28,7 +26,7 @@ class GifListContainer extends Component {
   render() {
     return (
       <div>
-        <GifSearch onSubmit={this.fetchGifs} />
+        <GifSearch handleFetchGifs={this.handleFetchGifs} />
         <GifList gifs={this.state.gifs} />
       </div>
     );
